@@ -1,6 +1,7 @@
 package com.pluralsight.cars.services;
 
 import JavaHelpers.ColorCodes;
+import com.pluralsight.cars.models.Contract;
 import com.pluralsight.cars.models.Dealership;
 import com.pluralsight.cars.models.Vehicle;
 
@@ -45,7 +46,8 @@ public class UserInterface {
                 [7] All Vehicles - display every vehicle from inventory
                 [8] Add Vehicle - adds a new vehicle to inventory
                 [9] Remove Vehicle - removes a vehicle from inventory
-                [10] Exit Application - quits running application
+                [10] Sell/Lease Vehicle - select vehicle to put up for sale/lease in a contract
+                [X] Exit Application - quits running application
                 """;
 
         do {
@@ -83,6 +85,8 @@ public class UserInterface {
                     processRemoveVehicleRequest();
                     break;
                 case "10":
+                    processSellLeaseVehicleRequest();
+                case "X, x":
                     exitApp = true;
                     break;
                 default:
@@ -219,6 +223,26 @@ public class UserInterface {
 
         dealership.removeVehicle(v);
         DealershipFileManager.saveDealership(dealership);
+    }
+
+    public void processSellLeaseVehicleRequest() {
+        Vehicle v;
+        promptInstructions("Would you like to sell or lease vehicle?: ");
+        String contractOption = promptUser("[1] Sell\n" + "[2] Lease");
+        int parsedContractOption = Integer.parseInt(contractOption);
+        promptInstructions("Enter the VIN of the vehicle to put in sale/lease contract from: " + dealership.getName());
+        String vehicleVin = promptUser("VIN: ");
+        int parsedVehicleVin = Integer.parseInt(vehicleVin);
+
+        v = new Vehicle(parsedVehicleVin);
+
+        if (parsedContractOption == 1) {
+            //Call the sale option --> promptForSale
+        } else if (parsedContractOption == 2) {
+            //Call the lease option --> promptForLease
+        }
+        //Save contents to the contracts.csv with added info from user and their vehicle selection
+//        ContractDataManager.saveContract(v);
     }
 
     //Retrieves user input from a prompt

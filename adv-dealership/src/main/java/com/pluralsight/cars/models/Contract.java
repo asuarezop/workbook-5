@@ -1,13 +1,16 @@
 package com.pluralsight.cars.models;
 
+import java.util.ArrayList;
+
 //Abstract Contract Class - cannot be used to instantiate a new object
 public abstract class Contract {
     private String date;
     private String customerName;
     private String customerEmail;
-    private boolean vehicleSold;
+    private boolean vehicleSold; //not a boolean, the actual vehicle object that user chose
     private double totalPrice;
     private double monthlyPayment;
+    private final ArrayList<Contract> contracts = new ArrayList<>();
 
     protected Contract(String date, String customerName, String customerEmail, boolean vehicleSold) {
         this.date = date;
