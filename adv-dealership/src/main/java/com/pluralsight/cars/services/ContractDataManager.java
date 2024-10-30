@@ -5,5 +5,7 @@ public class ContractDataManager {
     private static final String contractCSV = "src/main/resources/contracts.csv";
 
 
-    public void saveContract() {}
+    public void saveContract() {
+        
+    }
 }

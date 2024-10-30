@@ -7,18 +7,6 @@ public class DealershipFileManager {
     //String variable to hold inventory CSV file path
     private static final String inventoryCSV = "src/main/resources/inventory.csv";
 
-    //Initializing the BufferedWriter
-    public static BufferedWriter getBufferedWriter(String filename) throws IOException {
-        BufferedWriter bufWriter = new BufferedWriter(new FileWriter(filename));
-        return bufWriter;
-    }
-
-    //Initializing the BufferedReader
-    public static BufferedReader openFileReader(String filename) throws FileNotFoundException {
-        BufferedReader bufReader = new BufferedReader(new FileReader(filename));
-        return bufReader;
-    }
-
     //Retrieving a Dealership object, load and read from inventory.csv
     public static Dealership getDealership() {
         Dealership d = new Dealership();
@@ -26,7 +14,7 @@ public class DealershipFileManager {
 
         try {
             //Calling openFileReader method to initialize BufferedReader
-            BufferedReader bufReader = openFileReader(inventoryCSV);
+            BufferedReader bufReader = FileHandler.openFileReader(inventoryCSV);
 
             //Reading each line of input from fileContents
             String fileContents;
@@ -72,7 +60,7 @@ public class DealershipFileManager {
 
     public static void saveDealership(Dealership d) throws IOException {
         try {
-            BufferedWriter bufWriter = getBufferedWriter(inventoryCSV);
+            BufferedWriter bufWriter = FileHandler.getBufferedWriter(inventoryCSV);
 
             //Writing dealership header to csv file
             bufWriter.write(String.format("%s|%s|%s", d.getName(), d.getAddress(), d.getPhone()));
