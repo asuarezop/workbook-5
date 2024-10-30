@@ -5,16 +5,12 @@ import com.pluralsight.cars.models.Dealership;
 import com.pluralsight.cars.models.Vehicle;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
     //Instance variable for Dealership object
     private Dealership dealership;
-
-    //String variable to hold inventory CSV file path
-    public static final String inventoryCSV = "src/main/resources/inventory.csv";
 
     //Related to input from user
     static String userInput;

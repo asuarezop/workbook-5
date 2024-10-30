@@ -4,6 +4,9 @@ import com.pluralsight.cars.models.Vehicle;
 import java.io.*;
 
 public class DealershipFileManager {
+    //String variable to hold inventory CSV file path
+    private static final String inventoryCSV = "src/main/resources/inventory.csv";
+
     //Initializing the BufferedWriter
     public static BufferedWriter getBufferedWriter(String filename) throws IOException {
         BufferedWriter bufWriter = new BufferedWriter(new FileWriter(filename));
@@ -23,7 +26,7 @@ public class DealershipFileManager {
 
         try {
             //Calling openFileReader method to initialize BufferedReader
-            BufferedReader bufReader = openFileReader(UserInterface.inventoryCSV);
+            BufferedReader bufReader = openFileReader(inventoryCSV);
 
             //Reading each line of input from fileContents
             String fileContents;
@@ -69,7 +72,7 @@ public class DealershipFileManager {
 
     public static void saveDealership(Dealership d) throws IOException {
         try {
-            BufferedWriter bufWriter = getBufferedWriter(UserInterface.inventoryCSV);
+            BufferedWriter bufWriter = getBufferedWriter(inventoryCSV);
 
             //Writing dealership header to csv file
             bufWriter.write(String.format("%s|%s|%s", d.getName(), d.getAddress(), d.getPhone()));
