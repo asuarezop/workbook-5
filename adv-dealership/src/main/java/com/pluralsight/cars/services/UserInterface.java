@@ -3,6 +3,7 @@ package com.pluralsight.cars.services;
 import JavaHelpers.ColorCodes;
 import com.pluralsight.cars.models.Contract;
 import com.pluralsight.cars.models.Dealership;
+import com.pluralsight.cars.models.SalesContract;
 import com.pluralsight.cars.models.Vehicle;
 
 import java.io.IOException;
@@ -234,10 +235,33 @@ public class UserInterface {
         String vehicleVin = promptUser("VIN: ");
         int parsedVehicleVin = Integer.parseInt(vehicleVin);
 
-        v = new Vehicle(parsedVehicleVin);
+         v = dealership.getVehiclesByVin(parsedVehicleVin);
 
         if (parsedContractOption == 1) {
             //Call the sale option --> promptForSale
+            SalesContract vehicleSale;
+
+            promptInstructions("Enter the date associated with the sale: ");
+            String dateOfSale = promptUser("Date: ");
+
+            promptInstructions("Enter the customer name associated with the sale: ");
+            String customerName = promptUser("Customer name: ");
+
+            promptInstructions("Enter the customer email associated with the sale: ");
+            String customerEmail = promptUser("Customer email: ");
+
+            vehicleSale = new SalesContract(dateOfSale, customerName, customerEmail, v);
+
+            promptInstructions("Enter whether the vehicle was financed or not: ");
+            String financedOption = promptUser("[1] Yes\n" + "[2] No");
+
+            if (financedOption.equals("1")) {
+                vehicleSale.setFinanced(true);
+            } else if (financedOption.equals("2")) {
+                vehicleSale.setFinanced(false);
+            }
+
+//            ContractDataManager.saveContract(vehicleSale);
         } else if (parsedContractOption == 2) {
             //Call the lease option --> promptForLease
         }

@@ -1,5 +1,6 @@
 package com.pluralsight.cars.services;
 
+import com.pluralsight.cars.models.Contract;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -8,10 +9,12 @@ public class ContractDataManager {
     private static final String contractCSV = "src/main/resources/contracts.csv";
 
 
-    public static void saveContract() {
+    public static void saveContract(Contract c) {
 
         try {
             BufferedWriter bufWriter = FileHandler.getBufferedWriter(contractCSV);
+
+            bufWriter.write(String.format("%s|%s|%s|%s", "SALE", c.getDate(), c.getCustomerName(), c.getCustomerEmail()));
 
         } catch (IOException e) {
 //            throw new IOException(e);

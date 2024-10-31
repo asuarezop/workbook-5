@@ -7,12 +7,12 @@ public abstract class Contract {
     private String date;
     private String customerName;
     private String customerEmail;
-    private boolean vehicleSold; //not a boolean, the actual vehicle object that user chose
+    private Vehicle vehicleSold; //not a boolean, the actual vehicle object that user chose
     private double totalPrice;
     private double monthlyPayment;
     private final ArrayList<Contract> contracts = new ArrayList<>();
 
-    protected Contract(String date, String customerName, String customerEmail, boolean vehicleSold) {
+    protected Contract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.date = date;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -43,12 +43,8 @@ public abstract class Contract {
         this.customerEmail = customerEmail;
     }
 
-    public boolean isVehicleSold() {
+    public Vehicle getVehicleSold() {
         return vehicleSold;
-    }
-
-    public void setVehicleSold(boolean vehicleSold) {
-        this.vehicleSold = vehicleSold;
     }
 
     //Subclasses have to provide their own implementation of each of these abstract methods
