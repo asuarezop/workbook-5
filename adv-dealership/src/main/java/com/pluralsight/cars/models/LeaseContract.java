@@ -5,7 +5,7 @@ public class LeaseContract extends Contract {
     private double leaseFee;
     private double monthlyPayment;
 
-    public LeaseContract(String date, String customerName, String customerEmail, boolean vehicleSold) {
+    public LeaseContract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         super(date, customerName, customerEmail, vehicleSold);
     }
 

@@ -228,40 +228,47 @@ public class UserInterface {
 
     public void processSellLeaseVehicleRequest() {
         Vehicle v;
-        promptInstructions("Would you like to sell or lease vehicle?: ");
-        String contractOption = promptUser("[1] Sell\n" + "[2] Lease");
+        promptInstructions("Would you like to sell or lease vehicle?:  ");
+        String contractOption = promptUser("""
+                [1] Sell
+                [2] Lease
+                """);
         int parsedContractOption = Integer.parseInt(contractOption);
-        promptInstructions("Enter the VIN of the vehicle to put in sale/lease contract from: " + dealership.getName());
-        String vehicleVin = promptUser("VIN: ");
-        int parsedVehicleVin = Integer.parseInt(vehicleVin);
+        promptInstructions("Enter the VIN of the vehicle to put in sale/lease contract from:  " + dealership.getName());
+        String selectedVehicle = promptUser("VIN: ");
+        int parsedSelectedVehicle = Integer.parseInt(selectedVehicle);
 
-         v = dealership.getVehiclesByVin(parsedVehicleVin);
+         v = dealership.getVehiclesByVin(parsedSelectedVehicle);
 
         if (parsedContractOption == 1) {
             //Call the sale option --> promptForSale
             SalesContract vehicleSale;
 
-            promptInstructions("Enter the date associated with the sale: ");
+            promptInstructions("Enter the date associated with the sale:  ");
             String dateOfSale = promptUser("Date: ");
 
-            promptInstructions("Enter the customer name associated with the sale: ");
+            promptInstructions("Enter the customer name associated with the sale:  ");
             String customerName = promptUser("Customer name: ");
 
-            promptInstructions("Enter the customer email associated with the sale: ");
+            promptInstructions("Enter the customer email associated with the sale:  ");
             String customerEmail = promptUser("Customer email: ");
 
+            //Passing in sales data from the user into new SalesContract object
             vehicleSale = new SalesContract(dateOfSale, customerName, customerEmail, v);
 
-            promptInstructions("Enter whether the vehicle was financed or not: ");
-            String financedOption = promptUser("[1] Yes\n" + "[2] No");
+            promptInstructions("Enter whether the vehicle was financed or not:  ");
+            String financedOption = promptUser("""
+                    [1] Yes
+                    [2] No
+                    """);
 
             if (financedOption.equals("1")) {
                 vehicleSale.setFinanced(true);
             } else if (financedOption.equals("2")) {
                 vehicleSale.setFinanced(false);
+                ContractDataManager.saveContract(vehicleSale);
             }
 
-//            ContractDataManager.saveContract(vehicleSale);
         } else if (parsedContractOption == 2) {
             //Call the lease option --> promptForLease
         }

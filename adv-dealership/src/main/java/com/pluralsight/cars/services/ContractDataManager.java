@@ -14,7 +14,7 @@ public class ContractDataManager {
         try {
             BufferedWriter bufWriter = FileHandler.getBufferedWriter(contractCSV);
 
-            bufWriter.write(String.format("%s|%s|%s|%s", "SALE", c.getDate(), c.getCustomerName(), c.getCustomerEmail()));
+            bufWriter.write(String.format("%s|%s|%s|%s", "SALE", c.getDate(), c.getCustomerName(), c.getCustomerEmail(), c.getVehicleSold()));
 
         } catch (IOException e) {
 //            throw new IOException(e);
