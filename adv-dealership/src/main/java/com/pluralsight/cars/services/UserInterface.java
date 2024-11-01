@@ -7,6 +7,7 @@ import com.pluralsight.cars.models.SalesContract;
 import com.pluralsight.cars.models.Vehicle;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -171,11 +172,10 @@ public class UserInterface {
         promptInstructions("Enter vehicle type to search vehicles from:  " + dealership.getName());
         String vehicleType = promptUser("Type: ");
 
-        if (!vehicleType.isEmpty()){
+        if (!vehicleType.isEmpty()) {
             List<Vehicle> vehicles = dealership.getVehiclesByVehicleType(vehicleType);
             printVehicleList(vehicles);
-        }
-        else {
+        } else {
             System.out.println("Invalid vehicle type. Please try again.");
         }
     }
@@ -238,41 +238,17 @@ public class UserInterface {
         String selectedVehicle = promptUser("VIN: ");
         int parsedSelectedVehicle = Integer.parseInt(selectedVehicle);
 
-         v = dealership.getVehiclesByVin(parsedSelectedVehicle);
+        //Retrieve vehicle from dealership inventory to attach to contract
+        v = dealership.getVehiclesByVin(parsedSelectedVehicle);
+
+        //Call method to remove vehicle from dealership inventory
+        dealership.removeVehicle(v);
 
         if (parsedContractOption == 1) {
-            //Call the sale option --> promptForSale
-            SalesContract vehicleSale;
-
-            promptInstructions("Enter the date associated with the sale:  ");
-            String dateOfSale = promptUser("Date: ");
-
-            promptInstructions("Enter the customer name associated with the sale:  ");
-            String customerName = promptUser("Customer name: ");
-
-            promptInstructions("Enter the customer email associated with the sale:  ");
-            String customerEmail = promptUser("Customer email: ");
-
-            //Passing in sales data from the user into new SalesContract object
-            vehicleSale = new SalesContract(dateOfSale, customerName, customerEmail, v);
-
-            promptInstructions("Enter whether the vehicle was financed or not:  ");
-            String financedOption = promptUser("""
-                    [1] Yes
-                    [2] No
-                    """);
-            if (financedOption.equals("1")) {
-                vehicleSale.setFinanced(true);
-            } else if (financedOption.equals("2")) {
-                vehicleSale.setFinanced(false);
-                ContractDataManager.saveContract(vehicleSale);
-            }
-
+            promptSaleContractDetails("sale" , v);
         } else if (parsedContractOption == 2) {
             //Call the lease option --> promptForLease
         }
-        //Save contents to the contracts.csv with added info from user and their vehicle selection
-//        ContractDataManager.saveContract(v);
     }
 
     //Retrieves user input from a prompt
@@ -286,19 +262,56 @@ public class UserInterface {
         System.out.println(ColorCodes.LIGHT_BLUE + textDetails[0] + ColorCodes.ORANGE_BOLD + ColorCodes.ITALIC + textDetails[1] + ColorCodes.RESET);
     }
 
+    public void promptSaleContractDetails(String contractType, Vehicle vehicle) {
+        SalesContract vehicleSale;
+        String[] contractPrompts = {"Enter the date associated with the " + contractType + ":  ", "Enter the customer name associated with the " + contractType + ":  ", "Enter the customer email associated with the " + contractType + ":  ", "Enter whether the vehicle was financed or not:  "};
+        String[] userInputPrompts = {"Date: ", "Customer name: ", "Customer email: ", """
+                    [1] Yes
+                    [2] No
+                    """};
+
+        //Prompting for date
+        promptInstructions(contractPrompts[0]);
+        String dateOfContract = promptUser(userInputPrompts[0]);
+
+        //Prompting for customer name
+        promptInstructions(contractPrompts[1]);
+        String customerName = promptUser(userInputPrompts[1]);
+
+        //Prompting for customer email
+        promptInstructions(contractPrompts[2]);
+        String customerEmail = promptUser(userInputPrompts[2]);
+
+        //Passing in sales data from the user into new SalesContract object
+        vehicleSale = new SalesContract(dateOfContract, customerName, customerEmail, vehicle);
+
+        //Prompting to determine if vehicle was financed
+        promptInstructions(contractPrompts[3]);
+        String financedOption = promptUser(userInputPrompts[3]);
+
+        if (financedOption.equals("1")) {
+            //Setting isFinanced boolean variable to true in SalesContract
+            vehicleSale.setFinanced(true);
+        } else if (financedOption.equals("2")) {
+            //Setting isFinanced boolean variable to false in SalesContract
+            vehicleSale.setFinanced(false);
+        }
+        //Saving SalesContract data to contacts.csv file
+        ContractDataManager.saveContract(vehicleSale);
+    }
+
     public static void printDealershipHeader() {
         String dealershipHeader = ColorCodes.LIGHT_BLUE_UNDERLINED + String.format("%-10s %-8s %-15s %-13s %-17s %-10s %-12s %-12s", "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price") + ColorCodes.RESET;
         System.out.println(dealershipHeader);
     }
 
-    private static void printVehicleList (List<Vehicle> vehicles) {
-        if(!vehicles.isEmpty()){
+    private static void printVehicleList(List<Vehicle> vehicles) {
+        if (!vehicles.isEmpty()) {
             printDealershipHeader();
-            for (Vehicle v: vehicles){
+            for (Vehicle v : vehicles) {
                 System.out.println(v);
             }
-        }
-        else {
+        } else {
             System.out.println("No vehicles matched your input.");
         }
     }
