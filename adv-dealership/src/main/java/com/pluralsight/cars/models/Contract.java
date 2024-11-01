@@ -10,7 +10,12 @@ public abstract class Contract {
     private Vehicle vehicleSold; //not a boolean, the actual vehicle object that user chose
     private double totalPrice;
     private double monthlyPayment;
-    private final ArrayList<Contract> contracts = new ArrayList<>();
+
+    protected Contract(String date, String customerName, String customerEmail) {
+        this.date = date;
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+    }
 
     protected Contract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         this.date = date;
@@ -50,4 +55,7 @@ public abstract class Contract {
     //Subclasses have to provide their own implementation of each of these abstract methods
     public abstract double getTotalPrice();
     public abstract double getMonthlyPayment();
+
+    @Override
+    public abstract String toString();
 }

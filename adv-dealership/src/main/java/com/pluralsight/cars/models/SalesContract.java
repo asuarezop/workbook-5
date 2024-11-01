@@ -7,6 +7,10 @@ public class SalesContract extends Contract {
     private boolean isFinanced;
     private double monthlyPayment;
 
+    public SalesContract(String date, String customerName, String customerEmail) {
+        super(date, customerName, customerEmail);
+    }
+
     public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         super(date, customerName, customerEmail, vehicleSold);
     }
@@ -47,5 +51,10 @@ public class SalesContract extends Contract {
         }
 
         return 0.0;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f\n", "SALE", getDate(), getCustomerName(), getCustomerEmail(), getVehicleSold().getVin(), getVehicleSold().getYear(), getVehicleSold().getMake(), getVehicleSold().getModel(), getVehicleSold().getVehicleType(), getVehicleSold().getColor(), getVehicleSold().getOdometer(), getVehicleSold().getPrice(), getSalesTax(), getRecordingFee(), getProcessingFee(), getTotalPrice(), isFinanced(), getMonthlyPayment());
     }
 }

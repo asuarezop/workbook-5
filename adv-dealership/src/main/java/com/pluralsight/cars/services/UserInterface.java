@@ -261,7 +261,6 @@ public class UserInterface {
                     [1] Yes
                     [2] No
                     """);
-
             if (financedOption.equals("1")) {
                 vehicleSale.setFinanced(true);
             } else if (financedOption.equals("2")) {
