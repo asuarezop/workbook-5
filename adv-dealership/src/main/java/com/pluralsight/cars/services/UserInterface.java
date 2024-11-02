@@ -265,11 +265,11 @@ public class UserInterface {
     public void promptContractDetails(String contractType, Vehicle vehicle) {
         SalesContract vehicleSale;
         LeaseContract vehicleLease;
-        String[] contractPrompts = {"Enter the date associated with the " + contractType + ":  ", "Enter the customer name associated with the " + contractType + ":  ", "Enter the customer email associated with the " + contractType + ":  ", "Enter whether the vehicle was financed or not:  "};
+        String[] contractPrompts = {"Enter the date associated with the " + contractType + ":  ", "Enter the customer name associated with the " + contractType + ":  ", "Enter the customer email associated with the " + contractType + ":  ", "Enter whether the vehicle was financed or not:  ", "How much would you like to put towards down payment?:  "};
         String[] userInputPrompts = {"Date: ", "Customer name: ", "Customer email: ", """
                     [1] Yes
                     [2] No
-                    """};
+                    """, "Down payment amount: "};
 
         //Prompting for date
         promptInstructions(contractPrompts[0]);
@@ -284,29 +284,53 @@ public class UserInterface {
         String customerEmail = promptUser(userInputPrompts[2]);
 
         if (contractType.equals("sale")) {
-            //Passing in sales data from the user into new SalesContract object
-            vehicleSale = new SalesContract(dateOfContract, customerName, customerEmail, vehicle);
 
             //Prompting to determine if vehicle was financed
             promptInstructions(contractPrompts[3]);
             String financedOption = promptUser(userInputPrompts[3]);
 
+            //Passing in sales data from the user into new SalesContract object
+            vehicleSale = new SalesContract(dateOfContract, customerName, customerEmail, vehicle);
+
             if (financedOption.equals("1")) {
                 //Setting isFinanced boolean variable to true in SalesContract
                 vehicleSale.setFinanced(true);
+
+                //Prompting to determine down payment for vehicle
+                promptInstructions(contractPrompts[4]);
+                double downPayment = Double.parseDouble(promptUser(userInputPrompts[4]));
+
+                //Setting down payment variable to user's amount for SalesContract
+                vehicleSale.setDownPayment(downPayment);
+
             } else if (financedOption.equals("2")) {
                 //Setting isFinanced boolean variable to false in SalesContract
                 vehicleSale.setFinanced(false);
+
+                //Indicating user intends to pay with cash
+                vehicleSale.setDownPayment(0);
             }
+
             //Saving SalesContract data to contacts.csv file
             ContractDataManager.saveContract(vehicleSale);
+
         } else if (contractType.equals("lease")) {
             //Passing in lease data from the user into new LeaseContract object
             vehicleLease = new LeaseContract(dateOfContract, customerName, customerEmail, vehicle);
 
+            //Prompting to determine down payment for vehicle
+            promptInstructions(contractPrompts[4]);
+            double downPayment = Double.parseDouble(promptUser(userInputPrompts[4]));
+
+            //Setting down payment variable to user's amount for LeaseContract
+            vehicleLease.setDownPayment(downPayment);
+
             //Saving LeaseContract data to contacts.csv file
             ContractDataManager.saveContract(vehicleLease);
         }
+
+        //Confirmation message
+        System.out.println(ColorCodes.SUCCESS + ColorCodes.ITALIC + "Contract has been saved." + ColorCodes.RESET);
     }
 
     public static void printDealershipHeader() {

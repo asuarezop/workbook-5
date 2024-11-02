@@ -5,11 +5,8 @@ public class SalesContract extends Contract {
     private final double recordingFee = 100.00;
     private final double processingFee = 0.00;
     private boolean isFinanced;
+    private double downPayment;
     private double monthlyPayment;
-
-    public SalesContract(String date, String customerName, String customerEmail) {
-        super(date, customerName, customerEmail);
-    }
 
     public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold) {
         super(date, customerName, customerEmail, vehicleSold);
@@ -39,6 +36,14 @@ public class SalesContract extends Contract {
         isFinanced = financed;
     }
 
+    public double getDownPayment() {
+        return downPayment;
+    }
+
+    public void setDownPayment(double downPayment) {
+        this.downPayment = downPayment;
+    }
+
     @Override
     public double getTotalPrice() {
         return getVehicleSold().getPrice() + getSalesTax() + getRecordingFee() + getProcessingFee();
@@ -46,11 +51,30 @@ public class SalesContract extends Contract {
 
     @Override
     public double getMonthlyPayment() {
+        double interestRate;
+        double loanAmount;
+        int loanTerm;
+
         if (!isFinanced) {
-            return 0.0;
+            monthlyPayment = 0.0;
+
+            return monthlyPayment;
+        }
+        //For financing option
+        if (getVehicleSold().getPrice() >= 10000) {
+            //Interest Rate = 4.25%
+            interestRate = (4.25 / 12) / 100;
+            loanAmount = getVehicleSold().getPrice() - getDownPayment();
+            loanTerm = 48;
+        } else {
+            //Interest Rate = 5.25%
+            interestRate = (5.25 / 12) / 100;
+            loanAmount = getVehicleSold().getPrice() - getDownPayment();
+            loanTerm = 24;
         }
 
-        return 0.0;
+        monthlyPayment = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTerm)) / (Math.pow(1 + interestRate, loanTerm) - 1);
+        return monthlyPayment;
     }
 
     @Override
