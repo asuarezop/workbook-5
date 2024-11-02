@@ -245,9 +245,9 @@ public class UserInterface {
         DealershipFileManager.saveDealership(dealership);
 
         if (parsedContractOption == 1) {
-            promptSalesContractDetails("sale" , v);
+            promptContractDetails("sale" , v);
         } else if (parsedContractOption == 2) {
-            //Call the lease option --> promptForLease
+            promptContractDetails("lease", v);
         }
     }
 
@@ -262,7 +262,7 @@ public class UserInterface {
         System.out.println(ColorCodes.LIGHT_BLUE + textDetails[0] + ColorCodes.ORANGE_BOLD + ColorCodes.ITALIC + textDetails[1] + ColorCodes.RESET);
     }
 
-    public void promptSalesContractDetails(String contractType, Vehicle vehicle) {
+    public void promptContractDetails(String contractType, Vehicle vehicle) {
         SalesContract vehicleSale;
         LeaseContract vehicleLease;
         String[] contractPrompts = {"Enter the date associated with the " + contractType + ":  ", "Enter the customer name associated with the " + contractType + ":  ", "Enter the customer email associated with the " + contractType + ":  ", "Enter whether the vehicle was financed or not:  "};
@@ -283,26 +283,30 @@ public class UserInterface {
         promptInstructions(contractPrompts[2]);
         String customerEmail = promptUser(userInputPrompts[2]);
 
-        //Passing in sales data from the user into new SalesContract object
-        vehicleSale = new SalesContract(dateOfContract, customerName, customerEmail, vehicle);
+        if (contractType.equals("sale")) {
+            //Passing in sales data from the user into new SalesContract object
+            vehicleSale = new SalesContract(dateOfContract, customerName, customerEmail, vehicle);
 
-        //Prompting to determine if vehicle was financed
-        promptInstructions(contractPrompts[3]);
-        String financedOption = promptUser(userInputPrompts[3]);
+            //Prompting to determine if vehicle was financed
+            promptInstructions(contractPrompts[3]);
+            String financedOption = promptUser(userInputPrompts[3]);
 
-        if (financedOption.equals("1")) {
-            //Setting isFinanced boolean variable to true in SalesContract
-            vehicleSale.setFinanced(true);
-        } else if (financedOption.equals("2")) {
-            //Setting isFinanced boolean variable to false in SalesContract
-            vehicleSale.setFinanced(false);
+            if (financedOption.equals("1")) {
+                //Setting isFinanced boolean variable to true in SalesContract
+                vehicleSale.setFinanced(true);
+            } else if (financedOption.equals("2")) {
+                //Setting isFinanced boolean variable to false in SalesContract
+                vehicleSale.setFinanced(false);
+            }
+            //Saving SalesContract data to contacts.csv file
+            ContractDataManager.saveContract(vehicleSale);
+        } else if (contractType.equals("lease")) {
+            //Passing in lease data from the user into new LeaseContract object
+            vehicleLease = new LeaseContract(dateOfContract, customerName, customerEmail, vehicle);
+
+            //Saving LeaseContract data to contacts.csv file
+            ContractDataManager.saveContract(vehicleLease);
         }
-        //Saving SalesContract data to contacts.csv file
-        ContractDataManager.saveContract(vehicleSale);
-    }
-
-    public void promptLeaseContractDetails(String contractType, Vehicle vehicle) {
-
     }
 
     public static void printDealershipHeader() {
