@@ -217,13 +217,15 @@ public class UserInterface {
         String vehicleVin = promptUser("VIN: ");
         int parsedVehicleVin = Integer.parseInt(vehicleVin);
 
+        //Creating a vehicle with only VIN for comparison with removeVehicle()
         v = new Vehicle(parsedVehicleVin);
 
         dealership.removeVehicle(v);
+        //Re-updating dealership inventory to reflect changes
         DealershipFileManager.saveDealership(dealership);
     }
 
-    public void processSellLeaseVehicleRequest() {
+    public void processSellLeaseVehicleRequest() throws IOException {
         Vehicle v;
         promptInstructions("Would you like to sell or lease vehicle?:  ");
         String contractOption = promptUser("""
@@ -235,10 +237,12 @@ public class UserInterface {
         String selectedVehicle = promptUser("VIN: ");
         int parsedSelectedVehicle = Integer.parseInt(selectedVehicle);
 
-        v = new Vehicle(parsedSelectedVehicle);
+        v = dealership.getVehiclesByVin(parsedSelectedVehicle);
 
-        //Call method to remove vehicle from dealership inventory
+        //Removing vehicle from dealership inventory
         dealership.removeVehicle(v);
+        //Re-updating dealership inventory
+        DealershipFileManager.saveDealership(dealership);
 
         if (parsedContractOption == 1) {
             promptSalesContractDetails("sale" , v);
