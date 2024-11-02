@@ -42,8 +42,9 @@ public class ContractDataManager {
         try {
             BufferedWriter bufWriter = FileHandler.getBufferedWriter(contractCSV);
 
-            bufWriter.write(String.valueOf(c));
+            bufWriter.write(c.toString());
 
+            bufWriter.close();
         } catch (IOException e) {
 //            throw new IOException(e);
         }

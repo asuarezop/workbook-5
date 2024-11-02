@@ -119,18 +119,12 @@ public class Dealership {
         System.out.println(ColorCodes.SUCCESS + ColorCodes.ITALIC + "Vehicle removed from dealership." + ColorCodes.RESET);
     }
 
-    public Vehicle getVehiclesByVin(int vin) {
-        for (Vehicle v: inventory) {
-            if (v.getVin() == vin) {
-                //Return the retrieved vehicle in inventory that matches vin from the user
-                return v;
-            }
-        }
-        return null;
-    }
-
     @Override
     public String toString() {
         return String.format("%-12s, %-15s, %-12s", name, address, phone);
+    }
+
+    public String toCSV() {
+        return String.format("%s|%s|%s\n", name, address, phone);
     }
 }

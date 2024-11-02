@@ -63,11 +63,11 @@ public class DealershipFileManager {
             BufferedWriter bufWriter = FileHandler.getBufferedWriter(inventoryCSV);
 
             //Writing dealership header to csv file
-            bufWriter.write(String.format("%s|%s|%s", d.getName(), d.getAddress(), d.getPhone()));
+            bufWriter.write(d.toCSV());
 
             //Writing all vehicles from dealership inventory to csv file
             for (Vehicle v: d.getInventory()) {
-                bufWriter.write(String.format("%s|%s|%s|%s|%s|%s|%s|%s|%.2f\n", v.getVin(), v.getYear(), v.getMake(), v.getModel(), v.getModel(), v.getVehicleType(), v.getColor(), v.getPrice()));
+               bufWriter.write(v.toCSV());
             }
             bufWriter.close();
         } catch (IOException e) {

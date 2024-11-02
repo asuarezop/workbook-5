@@ -1,13 +1,9 @@
 package com.pluralsight.cars.services;
 
 import JavaHelpers.ColorCodes;
-import com.pluralsight.cars.models.Contract;
-import com.pluralsight.cars.models.Dealership;
-import com.pluralsight.cars.models.SalesContract;
-import com.pluralsight.cars.models.Vehicle;
+import com.pluralsight.cars.models.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,7 +52,7 @@ public class UserInterface {
             init();
             System.out.println(homeScreenMenuHeader);
             System.out.println(prompt);
-            userInput = inputSc.nextLine().trim();
+            userInput = inputSc.nextLine().trim().toUpperCase();
 
             switch (userInput) {
                 case "1":
@@ -88,11 +84,12 @@ public class UserInterface {
                     break;
                 case "10":
                     processSellLeaseVehicleRequest();
-                case "X, x":
+                    break;
+                case "X":
                     exitApp = true;
                     break;
                 default:
-                    throw new Error("Sorry, that's not a valid option. Please make your selection.");
+                    System.out.println("Sorry, that's not a valid option. Please make your selection.");
             }
         } while (!exitApp);
     }
@@ -238,14 +235,13 @@ public class UserInterface {
         String selectedVehicle = promptUser("VIN: ");
         int parsedSelectedVehicle = Integer.parseInt(selectedVehicle);
 
-        //Retrieve vehicle from dealership inventory to attach to contract
-        v = dealership.getVehiclesByVin(parsedSelectedVehicle);
+        v = new Vehicle(parsedSelectedVehicle);
 
         //Call method to remove vehicle from dealership inventory
         dealership.removeVehicle(v);
 
         if (parsedContractOption == 1) {
-            promptSaleContractDetails("sale" , v);
+            promptSalesContractDetails("sale" , v);
         } else if (parsedContractOption == 2) {
             //Call the lease option --> promptForLease
         }
@@ -262,8 +258,9 @@ public class UserInterface {
         System.out.println(ColorCodes.LIGHT_BLUE + textDetails[0] + ColorCodes.ORANGE_BOLD + ColorCodes.ITALIC + textDetails[1] + ColorCodes.RESET);
     }
 
-    public void promptSaleContractDetails(String contractType, Vehicle vehicle) {
+    public void promptSalesContractDetails(String contractType, Vehicle vehicle) {
         SalesContract vehicleSale;
+        LeaseContract vehicleLease;
         String[] contractPrompts = {"Enter the date associated with the " + contractType + ":  ", "Enter the customer name associated with the " + contractType + ":  ", "Enter the customer email associated with the " + contractType + ":  ", "Enter whether the vehicle was financed or not:  "};
         String[] userInputPrompts = {"Date: ", "Customer name: ", "Customer email: ", """
                     [1] Yes
@@ -298,6 +295,10 @@ public class UserInterface {
         }
         //Saving SalesContract data to contacts.csv file
         ContractDataManager.saveContract(vehicleSale);
+    }
+
+    public void promptLeaseContractDetails(String contractType, Vehicle vehicle) {
+
     }
 
     public static void printDealershipHeader() {

@@ -8,7 +8,7 @@ public class FileHandler {
         BufferedWriter bufWriter = null;
         if (filename.contains("inventory.csv")) {
             //Overwriting entire inventory csv file each time a vehicle is added/removed
-         bufWriter = new BufferedWriter(new FileWriter(filename));
+            bufWriter = new BufferedWriter(new FileWriter(filename));
         } else if (filename.contains("contracts.csv")) {
             //Activate append mode to add new contracts to end of contracts csv file
             bufWriter = new BufferedWriter(new FileWriter(filename, true));
